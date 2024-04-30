@@ -1,0 +1,652 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Git Workflow</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="9555c4ba-b06e-4e5a-a8bf-4a7042901400" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="Git%20Workflow/gith.png"/></div><h1 class="page-title">Git Workflow</h1></header><div class="page-body"><nav id="159ef981-7d3c-4c77-a646-4d36277ad0b5" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#9b19d1a3-5f13-4e65-87e3-179429d5693c"><strong>Overview</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#9653141b-cba4-4f67-8dc6-cf10dab53d1a"><strong>Git Visualization</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#4a5981e5-e951-4d21-9fe5-7fa99fda1615"><strong>A Rebase-Based Git Branching Model</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#7818166e-3dac-4694-bacb-ff54912b048b"><strong>The gist</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#8ecf419e-9f39-4ed1-8025-2f9f10121ad7"><strong>The workflow</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#e3130d6b-69b5-4522-aec2-7c91155f5c4a"><strong>useful config</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#eab4e45d-f6d5-4445-b085-1671e5abfa24"><strong>Fixing a Commit Before You Push</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#b5f95e80-8293-4549-a9eb-320db146b1da"><strong>DOs and DON&#x27;Ts</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#ba27b2dc-4e63-4468-b565-9c472d851051"><strong>DOs</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#2ddbdff7-6050-4c8e-8eb2-76cc441d78f0"><strong>DON&#x27;Ts</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#cde6780f-6f81-470c-bbb4-938b9a97327a"><strong>Links</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#5e8a1fd7-28d0-4a97-a8a9-de8d9a6e92ad"><strong>FAQ</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#6c742ff9-3903-4af9-b225-91a9b7f62e15"><strong>Won&#x27;t </strong><code><strong>git merge --no-ff</strong></code><strong> generate merge bubbles?</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#e91981f7-aaee-4437-ae73-bae017d31cbf"><strong>What do you mean by &quot;incremental, atomic&quot; changes?</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#02235652-bfd4-4c3f-bd24-2f4edda0d02a"><strong>Why not </strong><mark class="highlight-blue"><a href="http://nvie.com/git-model/"><strong>gitflow</strong></a></mark><strong> or another complex workflow?</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#26fbbc72-0290-438d-bf9a-8bd141fc423c"><strong>But, is it </strong><mark class="highlight-blue"><a href="http://mongodb-is-web-scale.com/"><strong>web-scale</strong></a></mark><strong>?</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#8d11d45e-dadf-4a51-af55-250cef854585"><strong>GitHub notes</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#c3675ecf-bdfe-497b-9c9e-e3cc149a39f3"><strong>Don&#x27;t fork. Push feature branches to main repo.</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#7f7c8616-936e-4a55-af91-cbd6cf145098"><strong>Should I merge Pull Requests on the site or commandline?</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#a495bb9e-9315-49f1-af57-17db687df3aa"><strong>Production Release Branches</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#bf4ce5b9-fcfc-4f69-844d-9031c5895ebc"><strong>Purpose of Prod Release Branches</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#640df1b9-9905-42f9-8a0c-cf0f8f21232b"><strong>Rules for Prod Release Branches</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#c9e5ca7b-0ccc-4623-bc60-bf6251bc4fe2"><strong>References for Prod Release Branches</strong></a></div></nav><h1 id="9b19d1a3-5f13-4e65-87e3-179429d5693c" class=""><strong>Overview</strong></h1><hr id="689c3606-d9bf-467c-8a06-b59857cb0848"/><p id="515b06ea-a4eb-4ab0-8645-b27e82ea4b2a" class="">
+</p><ul id="6b9f1dad-c77d-4904-aa70-ab18410cf125" class="bulleted-list"><li>These are some rough notes on a Git workflow that uses rebasing instead of merging for feature branches.</li></ul><ul id="a058c722-7427-4fe8-9e7c-a2cd746c202f" class="bulleted-list"><li>There is now a brief section at the end on how to handle production release branches (which, like master, are <strong>never</strong> rebased). Essentially, these can just be branches off of a stable master branch revision.</li></ul><ul id="dc892abf-b294-46cf-a064-bb58424391fa" class="bulleted-list"><li><strong>This is an incomplete work in progress</strong> It was originally copied from<a href="https://gist.github.com/17twenty/6733076"> </a><mark class="highlight-blue"><a href="https://gist.github.com/17twenty/6733076">https://gist.github.com/17twenty/6733076</a></mark> (the best writeup I could find), and then modified. Some things are still not completely accurate, and some I (Chad Woolley) don&#x27;t fully agree with (e.g. using tags)</li></ul><ul id="17e845a8-3af2-4c32-978a-7ba88f632ce0" class="bulleted-list"><li>I (Chad Woolley) am working on <mark class="highlight-blue"><a href="https://github.com/thewoolleyman/gitrflow">a tool, &#x27;gitrflow&#x27;</a></mark> to support this workflow, as well as some <mark class="highlight-blue"><a href="https://github.com/thewoolleyman/gitrflow/blob/master/readme/goals_and_philosophy.md">documentation on why rebasing is preferred for feature branches</a></mark>.</li></ul><ul id="3802a75f-2cfa-4bb5-9549-4fd7d3c1cb2e" class="bulleted-list"><li>Finally, an alternative to feature branches (when they are used to hide incomplete features in production) is <mark class="highlight-blue"><a href="http://en.wikipedia.org/wiki/Feature_toggle">Feature Flags/Toggles</a></mark>.</li></ul><h1 id="9653141b-cba4-4f67-8dc6-cf10dab53d1a" class=""><strong>Git Visualization</strong></h1><hr id="898d21ad-c7da-4b42-84d3-106583eda38e"/><p id="230073bf-a1c6-4332-98d6-301853b13c5a" class="">
+</p><ul id="14e5e0d6-24a6-4ae6-a4e6-8df82f552812" class="bulleted-list"><li>Also, check out <mark class="highlight-blue"><a href="http://onlywei.github.io/explain-git-with-d3/">Git D3 Visualization</a></mark> - it is a great interactive tool to visualize exactly what git commands are doing.</li></ul><hr id="3fbe7578-322f-4cf5-97a5-65dd4b6d9024"/><h1 id="4a5981e5-e951-4d21-9fe5-7fa99fda1615" class=""><strong>A Rebase-Based Git Branching Model</strong></h1><hr id="eac2f773-c6c7-435e-bb22-87abf7b645f8"/><p id="5161036a-88f0-4467-99fa-b66bfa4ae05f" class="">
+</p><p id="ba9f45b4-c636-4943-b335-fa68d23d1670" class="">This is a very simple git workflow. It (and variants) is in use by many people. It has been used effectively on many teams. <mark class="highlight-blue"><a href="https://github.com/">GitHub</a></mark> does something similar; Zach Holman mentioned it in <mark class="highlight-blue"><a href="http://www.youtube.com/watch?v=qyz3jkOBbQY&amp;t=09m12s">this talk</a></mark>.</p><h3 id="7818166e-3dac-4694-bacb-ff54912b048b" class=""><strong>The gist</strong></h3><ol id="7b6f4884-6a00-4bf9-b583-d7040415af02" class="numbered-list" start="1"><li><code>master</code> must always be deployable.</li></ol><ol id="75be7f59-4fa6-4a1b-87e3-a80acaae4ee9" class="numbered-list" start="2"><li><strong>all changes</strong> made through feature branches</li></ol><ol id="ecb7932b-a4b7-4937-ac9b-597f72dafdb5" class="numbered-list" start="3"><li>rebase continually (before beginning work on a feature branch, after pushing to a feature branch) to avoid/resolve conflicts;</li></ol><ol id="30f6a8f7-8d37-4ef6-aa78-426740924310" class="numbered-list" start="4"><li>merge feature branches back in to <code>master</code> with <code>--no-ff</code> flag.</li></ol><p id="1c5f13ed-9410-43a7-b077-744c71b4cf13" class="">
+</p><h3 id="8ecf419e-9f39-4ed1-8025-2f9f10121ad7" class=""><strong>The workflow</strong></h3><p id="551328ee-a345-4002-b40e-20fe8542c060" class=""><strong>IMPORTANT PREREQUISITES:</strong></p><ul id="030a9d97-6a55-497a-9bdb-b16ac4602766" class="bulleted-list"><li>With this workflow, only <strong>ONE PERSON OR PAIR</strong> should work on a feature branch at a time.</li></ul><ul id="927495df-a237-4e47-b356-99cd05562c1b" class="bulleted-list"><li>After a rebase onto a feature branch, you will be required to force push to that branch. This is OK because only one person at a time is working on it.</li></ul><pre id="3233a124-a431-4df2-ae63-3845a6e361fb" class="code"><code># everything is happy and up-to-date in master
+git status # make sure your working directory is clean
+
+# discarding all changes you don&#x27;t want
+# If you want to discard all changes in your working directory and start over:
+git reset --hard
+git clean -df
+
+# checkout master branch
+git checkout master
+git pull origin master</code></pre><p id="6e4eec00-f017-4e9f-bb35-f9125ec8a822" class="">Now you have the repo, make changes on master... Write tests and code, red-green-refactor. Once you have good changes, green tests, and haven&#x27;t broken anything on master, you are ready to commit and push:</p><p id="aec98668-19b0-47b5-88e0-23c89dd1d9c6" class=""><strong>IMPORTANT NOTE: Note the </strong><code><strong>git pull --rebase</strong></code><strong> before you push. This is so you don&#x27;t get merge conflicts. Remember you should never rebase master itself and force push it, like you would a feature branch, but that&#x27;s not what you are doing here. Here, you are just ensuring that your local changes are rebased ONTO master BEFORE you push them, and avoiding a possible separate merge-conflict-resolving commit</strong></p><pre id="8807bb26-f307-4779-bbbd-154c2ccb8744" class="code"><code># If your changes are safe (and you ran tests), commit on master:
+git add -p
+git commit -m &quot;message&quot;
+# Ensure you are up to date with master
+git pull --rebase # to get any changes that have happened on master since you started
+git push [origin master]</code></pre><p id="d246fb81-abb8-4fe1-97af-ce5151a74392" class="">Use this flow to get on a feature branch, or if you&#x27;re already on one.</p><pre id="a2e59f46-ebf3-459f-8104-c71c06cd2ce6" class="code"><code># let&#x27;s branch to make changes (omit the -b if the branch already exists)
+git checkout -b my-new-feature 
+
+# make any more required changes...
+
+# commit your (incremental, atomic) changes
+git add -p
+git commit -m &quot;my changes&quot;
+
+# push your changes to the feature branch
+git push origin my-new-feature
+
+# keep abreast of other changes to master.
+# rebasing keeps our code working, merging easy, and history clean.
+# Do this often - at the beginning of every day, and after every
+# push to the feature branch
+git fetch origin
+git rebase origin/master
+# IMPORTANT NOTE: If you have conflicts, always use &#x27;--continue&#x27;, never &#x27;--skip&#x27;.
+#                 See &quot;DOs&quot; and &quot;DON&#x27;Ts&quot; below.  If you are confused, ask for help
+
+# push your branch to github after every commit
+git push --force origin my-new-feature</code></pre><p id="b445090a-7614-478f-ac7d-25e39e5287ba" class=""><strong>important note:</strong> Note the &quot;force&quot; above in the push. This is necessary after a rebase, because the SHAs of the commits change. However, if you are the <strong>ONLY</strong> person/pair working on the feature branch (and you should be!), then it is fine to force push, because nobody else should have changed it.</p><pre id="e8e07549-050a-4700-b5d6-d1ee95e942c0" class="code"><code># optional: feel free to rebase within your feature branch at will.
+#           ok to rebase after pushing if your team can handle it!
+#           Google for more details on interactive rebase.
+git rebase -i &lt;SHA you are rebasing against, NOT necessarily origin/master&gt;
+
+# merge when done developing.
+# --no-ff preserves feature history and easy full-feature reverts
+# merge commits should not include changes; rebasing reconciles issues
+# github takes care of this in a Pull-Request merge
+git checkout master
+git pull origin master
+git merge --no-ff my-new-feature
+
+# now push the branch to master
+git push origin master
+
+# this MIGHT fail if somebody happened to push to master while you were merging.
+# If so, you can do `git pull --rebase` to get their changes, then try pushing again
+git pull --rebase &amp;&amp; git push origin master
+
+# after you are done merging your feature branch back to master and pushing, delete the local
+# branch with the &#x27;-d&#x27; option (not forced, like -D).  if you have successfully merged
+# all the feature branch&#x27;s commits to master, this no-force delete command should complete
+# with no warnings or errors, because git knows all the commits on the branch have 
+# been successfully merged to master.
+git branch -d my-new-feature
+
+# Then, delete the remote branch off of github:
+git push --delete origin my-new-feature
+
+# then everyone else can do a fetch with --prune to clean up the branch
+# off their local machines
+git fetch --prune
+
+# optional: tag important things, such as releases
+git tag 1.0.0-RC1</code></pre><h3 id="e3130d6b-69b5-4522-aec2-7c91155f5c4a" class=""><strong>useful config</strong></h3><pre id="295e6225-752c-4ee3-a2ae-e7a283d4c89c" class="code"><code># autosetup rebase so that pulls rebase by default
+git config --global branch.autosetuprebase always
+
+# if you already have branches (made before `autosetuprebase always`)
+git config branch.&lt;branchname&gt;.rebase true</code></pre><h3 id="eab4e45d-f6d5-4445-b085-1671e5abfa24" class=""><strong>Fixing a Commit Before You Push</strong></h3><ul id="a17cd631-c4d8-4c5a-bb14-4a808b2de482" class="bulleted-list"><li><strong>Firstly, check for the status</strong></li></ul><ul id="3eb84f85-e1d3-47cd-a0a0-8515ad59e099" class="bulleted-list"><li>git status</li></ul><ul id="d9cb9094-ae8b-4de3-84b1-bbdbd2334c24" class="bulleted-list"><li><strong>If there was a staged commit and changes was made to the directory, you can roll back the commit with</strong></li></ul><ul id="d2f82271-51d0-4912-b69f-9aed2252f7f6" class="bulleted-list"><li>git reset HEAD^</li></ul><ul id="27d135ae-dcb8-40a5-8ca2-113f1e579f12" class="bulleted-list"><li><strong>Check to confirm all the changes you have made to the current project</strong></li></ul><ul id="fb77dfb1-26b3-450e-a212-53d415be4d4f" class="bulleted-list"><li>git diff</li></ul><ul id="c5b42773-94b4-4d8f-98d0-6af0a9e013e0" class="bulleted-list"><li><strong>Add the changes you intend to commit</strong></li></ul><ul id="8f284cb6-fadc-478d-adbe-367461424919" class="bulleted-list"><li>git add -p</li></ul><ul id="cee3d85f-4e0c-403c-b51f-cecb19481602" class="bulleted-list"><li><strong>Do the commit and add your message</strong></li></ul><ul id="f5454fd6-221c-4394-a764-1300c04d12f9" class="bulleted-list"><li>git commit -m &quot;message&quot;</li></ul><ul id="eddd4a3a-8502-40e0-884e-f1970c170206" class="bulleted-list"><li><strong>Do the push</strong></li></ul><ul id="9326cf35-c5d2-45fc-b073-dd1e50c6c44c" class="bulleted-list"><li>git push</li></ul><h2 id="b5f95e80-8293-4549-a9eb-320db146b1da" class=""><strong>DOs and DON&#x27;Ts</strong></h2><p id="076a08bd-73b2-4fa2-9fcc-b20f2abc7a5a" class="">No DO or DON&#x27;T is sacred. You&#x27;ll obviously run into exceptions, and develop your own way of doing things. However, these are guidelines I&#x27;ve found useful.</p><h3 id="ba27b2dc-4e63-4468-b565-9c472d851051" class=""><strong>DOs</strong></h3><ul id="2e63562b-69fb-4b1b-90ad-f2532e9fc187" class="bulleted-list"><li><strong>DO</strong> keep <code>master</code> in working order.</li></ul><ul id="8fbb1fc8-509a-4562-a33a-1c7cd72f6c52" class="bulleted-list"><li><strong>DO</strong> rebase your feature branches.<ul id="0f8bc503-96ee-44da-9895-f727a83f0588" class="bulleted-list"><li><strong>DO</strong> pull in (rebase on top of) changes</li></ul></li></ul><ul id="b89af8b9-61c7-41b6-8a2a-0d88f773cce0" class="bulleted-list"><li><strong>DO</strong> tag releases</li></ul><ul id="e8426e55-6b99-4cd9-8236-8dd3fb4e4ad0" class="bulleted-list"><li><strong>DO</strong> push feature branches for discussion</li></ul><ul id="ae4b24d5-d2d6-4445-9137-714a7dd4bb0c" class="bulleted-list"><li><strong>DO</strong> learn to rebase<ul id="64f46215-0fac-4614-8eea-1fb9a179ef33" class="bulleted-list"><li>When rebasing in changes and resolving conflicts, always use &#x27;--continue&#x27; - never skip conflicts</li></ul></li></ul><h3 id="2ddbdff7-6050-4c8e-8eb2-76cc441d78f0" class=""><strong>DON&#x27;Ts</strong></h3><ul id="949dba46-44d4-400a-8b03-e0f096027d7e" class="bulleted-list"><li><strong>DON&#x27;T</strong> EVER force push master! This includes <code>push +master</code></li></ul><ul id="10fe23f7-e7f2-438e-b5ab-2b524a0fa98b" class="bulleted-list"><li><strong>DON&#x27;T</strong> rebase the remote <code>master</code> (Note that doing <code>pull --rebase</code> prior to a push doesn&#x27;t count at as &quot;remote&quot;).</li></ul><ul id="1673c050-51cd-4d73-934a-e32dcf978c9d" class="bulleted-list"><li><strong>DON&#x27;T</strong> merge in broken code.</li></ul><ul id="2b67a7cc-51fa-4b67-8e21-3b8190dd6293" class="bulleted-list"><li><strong>DON&#x27;T</strong> merge with conflicts. handle conflicts upon rebasing.<ul id="8016c849-5627-4fa8-91e0-f120fe5f7297" class="bulleted-list"><li>When rebasing, you should <strong>NEVER</strong> commit a merge conflict! If you end up with a merge conflict, you did something wrong, and should abort and start over.</li></ul></li></ul><h3 id="cde6780f-6f81-470c-bbb4-938b9a97327a" class=""><strong>Links</strong></h3><ul id="b23d38eb-fe4e-4ff7-8245-dd3d4534500b" class="bulleted-list"><li><mark class="highlight-blue"><a href="https://github.com/blog/1124-how-we-use-pull-requests-to-build-github">https://github.com/blog/1124-how-we-use-pull-requests-to-build-github</a></mark></li></ul><h1 id="5e8a1fd7-28d0-4a97-a8a9-de8d9a6e92ad" class=""><strong>FAQ</strong></h1><hr id="1b35befa-f32b-4130-a410-5b58ac05e531"/><p id="3a8ee3b6-c547-46c8-8ee8-fddf642c72ad" class="">
+</p><h3 id="6c742ff9-3903-4af9-b225-91a9b7f62e15" class=""><strong>Won&#x27;t </strong><code><strong>git merge --no-ff</strong></code><strong> generate merge bubbles?</strong></h3><p id="c9371cc6-4298-423e-bf39-abc4d396ec5d" class="">Yes. Merge bubbles aren&#x27;t inherently bad. They allow you to revert entire features at a time. They get confusing and annoying to deal with if they cross (commits interleave), so don&#x27;t do that.</p><h3 id="e91981f7-aaee-4437-ae73-bae017d31cbf" class=""><strong>What do you mean by &quot;incremental, atomic&quot; changes?</strong></h3><p id="1ec012f7-38e7-42ba-a68a-28d4a91ae678" class=""><mark class="highlight-blue"><a href="http://en.wikipedia.org/wiki/Atomic_commit#Atomic_Commit_Convention">http://en.wikipedia.org/wiki/Atomic_commit#Atomic_Commit_Convention</a></mark></p><p id="de0bf368-bf93-41b7-8c42-221906a0cfd5" class="">Thanks wikipedia, I couldn&#x27;t have put it better myself.</p><h3 id="02235652-bfd4-4c3f-bd24-2f4edda0d02a" class=""><strong>Why not </strong><mark class="highlight-blue"><a href="http://nvie.com/git-model/"><strong>gitflow</strong></a></mark><strong> or another complex workflow?</strong></h3><p id="234d1602-9966-4eaf-8a98-db94b136e4e8" class="">Be my guest. I&#x27;ve used gitflow and other similar models. After working in various teams, this is just what I&#x27;ve come to use. But next time you have to ask someone whether it is okay to push or pull from this or that branch, remember <mark class="highlight-blue"><a href="http://juan.benet.ai/img/juan.batizbenet.headshotsq.jpg">my face</a></mark>.</p><h3 id="26fbbc72-0290-438d-bf9a-8bd141fc423c" class=""><strong>But, is it </strong><mark class="highlight-blue"><a href="http://mongodb-is-web-scale.com/"><strong>web-scale</strong></a></mark><strong>?</strong></h3><p id="7eba0a2e-c66c-429b-9b3a-0cd1b90805fd" class="">Friends claim more complex models are necessary for scaling large teams, maintaining old releases, controlling information flow, etc. It very well may be that using multiple mainlines (e.g. <code>develop</code>, <code>stable</code>, <code>release</code>, <code>v2</code>, <code>tested</code>, etc) is exactly what fits your organization&#x27;s constraints. That&#x27;s for you to decide, not me (unless we work together -- oh hi there!).</p><p id="c9aad414-6e80-4689-b66c-0bc68f16a855" class="">But you always have to wonder, &quot;shouldn&#x27;t I use tags for that&quot;? For example, tracking releases on a branch is a bit silly. A release commit can be tagged. You can checkout a tag, just like any branch, or any commit, and do whatever it is you need to do.</p><p id="54bf8720-89d8-4871-a5a9-25c7899e2374" class="">My guess is this relationship holds:</p><p id="1b42d8dc-1d5d-4319-a4b0-a4ba7e4ab45d" class="">So, perhaps taking five minutes to teach your team how to use <code>checkout</code> and <code>tag</code> might save you more than 15% on car insurance.</p><h1 id="8d11d45e-dadf-4a51-af55-250cef854585" class=""><strong>GitHub notes</strong></h1><hr id="c8637a49-c9f5-4151-9b4b-c254af9fabbf"/><p id="69c2c722-e657-48da-9474-90fb7624a993" class="">
+</p><h3 id="c3675ecf-bdfe-497b-9c9e-e3cc149a39f3" class=""><strong>Don&#x27;t fork. Push feature branches to main repo.</strong></h3><p id="e908a494-c821-4c5c-bd95-3a3df6c7b589" class="">Sometimes I see people forking repositories in order to issue pull-requests. Yes, you may have to do this when contributing to open-source projects you don&#x27;t regularly contribute to. But, if you are a contributor, or working in the same org, get push rights on the repo and push all your feature branches to it. <strong>Issue pull requests from one branch to another within the same repo.</strong></p><h3 id="7f7c8616-936e-4a55-af91-cbd6cf145098" class=""><strong>Should I merge Pull Requests on the site or commandline?</strong></h3><p id="579e5b4d-2979-47bc-9aa0-cfd5f93a6995" class="">Up to you. Github does <code>git merge --no-ff</code> so that the commit message indicates the pull request number. This is useful information to have, don&#x27;t just throw away history for the sake of it. You never know what will be useful to look at in the future.</p><h1 id="a495bb9e-9315-49f1-af57-17db687df3aa" class=""><strong>Production Release Branches</strong></h1><hr id="7614923f-ac26-42d0-8300-c39f25077350"/><p id="78657477-8a12-425c-8d80-4c1d13731210" class="">
+</p><h2 id="bf4ce5b9-fcfc-4f69-844d-9031c5895ebc" class=""><strong>Purpose of Prod Release Branches</strong></h2><p id="d7f0d299-18eb-4f75-9a0c-b2f991be0b7b" class="">Production release branches are intended to be a &quot;stable&quot; fork of the code. It allows you to:</p><ul id="848d3a90-49a1-48c8-936d-1b80dbb2b1ae" class="bulleted-list"><li>Prepare code for a production release in isolation, while still being able to commit new code to master without the risk of breaking the production release.</li></ul><ul id="8de72bf2-0058-4dc1-a226-f694ed40229f" class="bulleted-list"><li>Make final tweaks (e.g. cherry pick changes from master or other branches) to prepare for the production deploy.</li></ul><ul id="0c969137-83fa-4a6c-a1ca-4d0eafa34b59" class="bulleted-list"><li>After the release is in production, make subsequent hotfixes and further releases from the same branch, ensuring it is completely stable and unchanged other than the hotfix.</li></ul><h2 id="640df1b9-9905-42f9-8a0c-cf0f8f21232b" class=""><strong>Rules for Prod Release Branches</strong></h2><ul id="d099cfbb-af46-4d2d-8263-bd24734300b3" class="bulleted-list"><li>They are <strong>NEVER</strong> rebased or force pushed. This would go against their goal of stability and repeatability. The only changes made to them are to make minor bug fixes or tweaks, ideally cherry picked from master or merged in from a hotfix branch (which can also be merged to master).</li></ul><ul id="0b43321b-0e4d-4e36-9064-6d652dddc79b" class="bulleted-list"><li>Naming Conventions: It&#x27;s good to name them consistently, and use a date which is the target release date, or a branch date. E.g. <code>prod-release-2015-01-15</code>. You could also use <mark class="highlight-blue"><a href="http://semver.org/">Semantic Versioning</a></mark>, e.g. <code>v1.0</code> (leave off patch version, that&#x27;s included in a tag, see below)</li></ul><ul id="5a758bd3-dcbf-47d6-833c-f5c5754b3c0d" class="bulleted-list"><li>Tags: It&#x27;s a good idea to create a tag for the revision that actually gets deployed to staging and then production, with incrementing numbers. If you make multiple releases from the same prod release branch, you can increment the tag number. E.g. <code>prod-release-2015-01-15-1</code>, <code>prod-release-2015-01-15-2</code>. Or with Semantic Versioning, just tag the first release from the branch the same as the tag (<code>1.0.0</code>), then subsequent releases bump the patch version (e.g. <code>1.0.1</code>, <code>1.0.2</code>).</li></ul><ul id="f4110fcd-2065-4889-a8d7-ad0d508db2b7" class="bulleted-list"><li>The general idea is that tags and branches should sort chronologically.</li></ul><h2 id="c9e5ca7b-0ccc-4623-bc60-bf6251bc4fe2" class=""><strong>References for Prod Release Branches</strong></h2><p id="05e7fdd4-ad46-4b64-a91e-eb308f982c29" class="">The following pages have some info on prod release branches, search for &#x27;prod&#x27; or &#x27;release&#x27;. The important thing to remember when reading them is that we <strong>do not use a develop branch, we make branches directly off of master</strong>. Other than that, the information these pages have on release branches and hotfix branches is relevant:</p><ul id="f42a10bc-d546-48f2-9c24-b318e2ed84d9" class="bulleted-list"><li><mark class="highlight-blue"><a href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow">https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow</a></mark></li></ul><ul id="0087147d-3ca1-484f-8796-ce927e364452" class="bulleted-list"><li><mark class="highlight-blue"><a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></mark></li></ul><p id="6b2a33ad-4f1e-469d-a240-44c353bdd0be" class="">
+</p><p id="118ba9cc-9314-4ddb-aab8-0ab71c4ced6e" class="">
+</p><p id="d8dbf9cf-c262-4abf-9ea8-ee6ebbba3841" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ad1e4315-c0bd-4e24-9cf4-30255650d1f0"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Adapted from <mark class="highlight-blue">https://github.com/andela/bestpractices/wiki/Git-Workflow</mark></div></figure><p id="2828fd53-4153-4b8e-b2d2-19d7d8e3f6c9" class="">
+</p></div></article></body></html>

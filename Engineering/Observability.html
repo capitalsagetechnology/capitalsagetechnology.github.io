@@ -1,0 +1,566 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Observability</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="d527ea4d-051b-44ff-9c03-7d41a4205c8b" class="page sans"><header><h1 class="page-title">Observability</h1></header><div class="page-body"><p id="5878408e-56dc-413f-bcad-edca45f13f1d" class="">
+</p><h1 id="94b33876-3b01-4789-afee-d8c1900c21ae" class=""><strong>Observability</strong></h1><p id="f8dfdb7b-8b6d-450a-b064-697c853e2880" class="">Building observable systems enables development teams at CSE to measure how well the application is behaving.</p><h2 id="36b809d9-8200-4654-b166-9ace30382afe" class=""><strong>Goals</strong></h2><ol id="71c590df-4a2f-4083-9f2d-4f89b7048e99" class="numbered-list" start="1"><li>Provide holistic view on the health of the application.</li></ol><ol id="6954ed8d-914e-4fd0-abb0-173f17f067e9" class="numbered-list" start="2"><li>Help measure business performance for the customer.</li></ol><ol id="e68c481a-5402-4429-b055-5e5b119e6399" class="numbered-list" start="3"><li>Measure operational performance of the system.</li></ol><ol id="9c5f3066-459c-490e-b17c-f5546dfcd0eb" class="numbered-list" start="4"><li>Identify and diagnose failures to get to the problem fast.</li></ol><h2 id="6244e6a3-8da3-423b-a839-17600465c473" class=""><strong>Pillars of observability</strong></h2><h3 id="71475e08-5bdc-4ae1-ad05-359626741e43" class=""><strong>Logging</strong></h3><p id="5d3ac0e0-435b-496e-87a9-ab67c317cc03" class="">Logs are discrete events with the goal of helping engineers identify problem area(s) during failures.</p><ul id="0c36c0f1-7bf1-4d2d-9638-17f605097ff1" class="bulleted-list"><li>Pay attention to logging levels. Logging too much will increase costs and decrease application throughput.</li></ul><ul id="4b4bbfe6-11ca-4ee6-a0e4-abc16271b4c9" class="bulleted-list"><li>Ensure logging configuration can be modified without code changes. Ideally, make it changeable without application restarts.</li></ul><ul id="28812813-ab43-4399-ab7d-aec7a3c51a3c" class="bulleted-list"><li>If available, take advantage of logging levels per category allowing granular logging configuration.</li></ul><ul id="76c76eaa-cf8e-491a-a7ee-cbe49fe2a652" class="bulleted-list"><li>Check for log levels before logging, thus avoiding allocations and string manipulation costs.</li></ul><ul id="8dac2496-b188-48c6-a868-9f463e00ef6f" class="bulleted-list"><li>Ensure service versions are included in logs to be able to identify problematic releases.</li></ul><ul id="b3a0906a-2bfa-4a6f-9b0c-b867c0c8cab0" class="bulleted-list"><li>Log a raised exception only once. In your handlers, only catch expected exceptions that you can handle gracefully (even with a specific return code). If you want to log and rethrow, leave it to the top level exception handler. Do the minimal amount of cleanup work needed then throw to maintain the original stack trace. Don’t log a warning or stack trace for expected exceptions (eg: properly expected 404, 403 HTTP statuses).</li></ul><ul id="85732881-4a61-4437-a4fa-eb47d16306d8" class="bulleted-list"><li>Fine tune logging levels in production (&gt;= warning for instance). During a new release the verbosity can be increased to facilitate bug identification.</li></ul><ul id="e20218e6-831b-461a-8e92-8c2fbf29d488" class="bulleted-list"><li>If using sampling, implement this at the service level rather than defining it in the logging system. This way we have control over what gets logged. An additional benefit is reduced number of roundtrips.</li></ul><ul id="ea0121bd-8c32-4230-8536-3e5f0208e5e5" class="bulleted-list"><li>Only include failures from health checks and non-business driven requests.</li></ul><ul id="d3d0faf5-db35-4468-b049-d81ed96f386b" class="bulleted-list"><li>Ensure a downstream system malfunction won&#x27;t cause repetitive logs being stored.</li></ul><ul id="b047adb5-d32a-453d-81c6-43d7ddaff1bf" class="bulleted-list"><li>Don&#x27;t reinvent the wheel, use existing tools to collect and analyse the data.</li></ul><ul id="511b3906-71fd-4c6c-990c-f8dc797af499" class="bulleted-list"><li>Ensure personal identifiable information policies and restrictions are followed.</li></ul><h3 id="ab65062e-6192-41cb-b373-451cdf9540cb" class=""><strong>Having problems identifying what to log?</strong></h3><p id="4baf302d-93bd-44fd-b999-3c0cf77c4df9" class=""><strong>At application startup</strong>:</p><ul id="3e67711d-cfff-42d9-8247-beebe7c98e74" class="bulleted-list"><li>Unrecoverable errors from startup.</li></ul><ul id="81e424eb-a906-4226-803c-3d36c4284778" class="bulleted-list"><li>Warnings if application still runnable, but not as expected (i.e. not providing blob connection string, thus resorting to local files. Another example is if there&#x27;s a need to fail back to a secondary service or a known good state, because it didn’t get an answer from a primary dependency.</li></ul><ul id="8b271571-3a67-44cc-9486-a2b357eeda4e" class="bulleted-list"><li>Information about the service’s state at startup (build #, configs loaded, etc.)</li></ul><p id="d1c207c9-d2cc-40b5-9dde-7ae69db943ef" class=""><strong>Per incoming request</strong>:</p><ul id="3c19147a-b661-4b43-9e74-f3a274f01ef6" class="bulleted-list"><li>Basic information for each incoming request: the url (scrubbed of any personally identifying data, a.k.a. PII), any user/tenant/request dimensions, response code returned, request-to-response latency, payload size, record counts, etc. (whatever you need to learn something from the aggregate data)</li></ul><ul id="becf261b-3d03-4776-b604-7b7028752d36" class="bulleted-list"><li>Warning for any unexpected exceptions, caught only at the top controller/interceptor and logged with or alongside the request info, with stack trace. Return a 500. This code doesn’t know what happened.</li></ul><p id="077805c7-6514-4093-8c34-f569cdd2a021" class=""><strong>Per outgoing request</strong>:</p><ul id="893dbc2d-6cff-443f-bd00-440eded66f7b" class="bulleted-list"><li>Basic information for each outgoing request: the url (scrubbed of any personally identifying data, a.k.a. PII), any user/tenant/request dimensions, response code returned, request-to-response latency, payload sizes, record counts returned, etc. Report perceived availability and latency of dependencies and including slicing/clustering data that could help with later analysis.</li></ul><h2 id="088897eb-f7b4-45b6-adf0-a1b81f298c8a" class=""><strong>Tracing</strong></h2><p id="f1757755-4740-4930-9d6e-7391f891ac31" class="">Produces the information required to observe series of correlated operations in a distributed system. Once collected they show the path, measurements and faults in a end to end transaction.</p><ul id="56e146b8-d15c-48d7-91c8-56fcee97e795" class="bulleted-list"><li>Ensure that at least key business transactions are traced.</li></ul><ul id="1d6b5463-479d-4a27-a548-67cae4e0e86a" class="bulleted-list"><li>Include in each trace necessary information to identify software releases (i.e. service name, version). This is important to correlate deployments and system degradation.</li></ul><ul id="4b676307-cc30-4953-bd33-8c3575b9d77c" class="bulleted-list"><li>Ensure dependencies are included in trace (databases, I/O).</li></ul><ul id="b8cf9e17-9b64-4796-8f47-de90c2a5ac5a" class="bulleted-list"><li>If costs are a concern use sampling, avoiding throwing away errors, unexpected behaviour and critical information.</li></ul><ul id="7c7de867-90be-4b46-96ce-0dc65563d7de" class="bulleted-list"><li>Don&#x27;t reinvent the wheel, use existing tools to collect and analyse the data.</li></ul><ul id="27e5ec66-0df0-4bbc-bff2-8e3bded6afe6" class="bulleted-list"><li>Ensure personal identifiable information policies and restrictions are followed.</li></ul><h2 id="afe096c0-25f8-40af-a1ed-e46d3c103f05" class=""><strong>Metrics</strong></h2><p id="bb455573-a189-4f8f-b156-14acee2e8d81" class="">Metrics provide a near real-time indication of how the system is running. As opposed to logs and traces, the amount of data collected using metrics remains constant as the system load increases.</p><ul id="a19df4bd-a779-4a83-802f-a25864954873" class="bulleted-list"><li>Measurements that need to be alerted upon are good candidates for metrics: queue length, retries, latency, requests/sec, cpu, memory. These metrics can be use to automatically scale components.</li></ul><ul id="03254911-dd5c-4f44-9ab5-4e0ade09b060" class="bulleted-list"><li>Use metrics to collect business success measurements. For instance visits, sold items, session time, games played, jobs done. Ask stakeholders what they need.</li></ul><ul id="76c86f53-24a1-419c-bb6b-2620ba7b4956" class="bulleted-list"><li>Whenever applicable add release/version dimensions to metrics, allowing the comparison between versions (did the change provide improvements?).</li></ul><h2 id="697597b8-b759-4298-814d-c7c78211cbd2" class=""><strong>Recommended Practices</strong></h2><ol id="e3b73164-e2c0-46f9-83f0-5b9de2fdc393" class="numbered-list" start="1"><li>Ensure health of the services are <strong>monitored</strong> and provide insights into system&#x27;s performance and behavior.</li></ol><ol id="24b72bcc-71f5-41dd-8dda-e7285c434364" class="numbered-list" start="2"><li><strong>Faults, crashes, and failures</strong> are logged as discrete events. This helps engineers identify problem area(s) during failures.</li></ol><ol id="f61a98dd-23d8-4927-8e5f-63f9f57dacf9" class="numbered-list" start="3"><li>Ensure logging configuration (eg: setting logging to &quot;verbose&quot;) can be controlled without code changes.</li></ol><ol id="3736054f-5ab2-48a3-a024-d492317f841f" class="numbered-list" start="4"><li>Ensure that <strong>metrics</strong> around latency and duration are collected and can be aggregated.</li></ol><ol id="3e76ecba-f175-446d-9856-e487e92e16ff" class="numbered-list" start="5"><li>Include unique identifier for all logs to tie down aggregated data from various systems and provide a holistic view.</li></ol><ol id="d95bf409-8fa0-47b4-b791-015c13790b71" class="numbered-list" start="6"><li>Don&#x27;t attempt to monitor everything. If the data is not actionable, it is useless and becomes noise.</li></ol><ol id="4c0c37c6-69fc-4986-931b-d7f2f6de2c08" class="numbered-list" start="7"><li>As a general rule, do not log any customer sensitive and Personal Identifiable Information (PII). Ensure GDPR compliance is followed regarding PII.</li></ol><ol id="ee01f01f-0ce9-4f4b-aa41-878ca7638228" class="numbered-list" start="8"><li>Start small and add where there is customer impact.</li></ol><h2 id="2149d6e4-d0c5-4bd9-a11f-121ee9d4fd13" class=""><strong>What is collected</strong></h2><ol id="42cafd97-811e-4985-a1ed-6e67a8f61187" class="numbered-list" start="1"><li><strong>Latency</strong>: Time taken to service a request.</li></ol><ol id="b645f9ff-bebf-4f3c-b836-18982f30cb16" class="numbered-list" start="2"><li><strong>Traffic</strong>: Measurement of how much demand is placed on the system, typically number of requests per second.</li></ol><ol id="4bfea4a3-2d3d-4037-9a56-cb6aa6b9da07" class="numbered-list" start="3"><li><strong>Errors</strong>: Errors, application faults and traces with adequate information on error messages.</li></ol><ol id="0ed8a603-8fec-4f72-a217-74c2873dc1f5" class="numbered-list" start="4"><li>Identify a unique value (correlation identifier) that will be consistently tagged with data.</li></ol><p id="bef1a321-248a-4234-b475-c317cbe16fc4" class="">In addition to above, engineers are encouraged to have conversations to understand other logs, metrics, data that adds value to the customer.</p></div></article></body></html>

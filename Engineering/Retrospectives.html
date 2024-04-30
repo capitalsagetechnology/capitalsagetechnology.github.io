@@ -1,0 +1,566 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Retrospectives</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="a3cf29eb-99aa-4fb0-aea9-f03c6a808a0b" class="page sans"><header><h1 class="page-title">Retrospectives</h1></header><div class="page-body"><p id="99174220-c750-43cc-870f-96f76e932779" class="">
+</p><p id="067b2102-1f0d-4260-b60b-02efe0d96881" class="">Development teams working on <a href="https://github.com/microsoft/code-with-engineering-playbook/blob/master/CSE.md">CSE</a> projects will conduct <a href="https://www.amazon.com/Agile-Retrospectives-Making-Teams-Great/dp/0977616649">agile retrospectives</a> for each iteration and project milestone.</p><h2 id="c746a78e-0d4d-422a-8682-ca25d79b6b93" class=""><strong>Goals</strong></h2><ol id="8ef6582e-0a85-47fb-beb3-ce34db2a52e2" class="numbered-list" start="1"><li>Continually learn from our engagement, improving our ability to deliver value to our customers.</li></ol><ol id="a33cfa83-cae1-4096-8673-35decd5a3a22" class="numbered-list" start="2"><li>Involve everyone in the learning and improvement.</li></ol><ol id="150ae359-c646-427a-9263-89416b142635" class="numbered-list" start="3"><li>The dev team and <em>the larger org</em> learn from each engagement.</li></ol><h2 id="9f0f3cb1-32f7-41b7-90af-ff60f276c8f2" class=""><strong>Evidence and Measures</strong></h2><p id="eb066252-f060-4de9-ae0f-a2749074b257" class="">At the end of each milestone or engagement, the team will write up the results of their retrospective, including 1-3 proposed changes or experiments. Owners will be assigned to each item, to make sure that retrospection leads to action, when desired.</p><p id="9c5bf984-8289-43ec-9d99-d55e800530c5" class="">Proposed changes coming out of iteration retrospectives should be tracked as tasks or bugs in the project backlog.</p><h2 id="902dc941-b0af-4643-8dd5-2cb4e8ca1b6b" class=""><strong>General Guidance</strong></h2><p id="cfe76be5-593e-4f7e-a5f4-143e346d418d" class="">The <a href="https://www.amazon.com/Agile-Retrospectives-Making-Teams-Great/dp/0977616649"><em>Agile Retrospectives</em></a> book provides a clear script for conducting retrospectives. Every retrospective should follow some version of the script, depending on the length of the retrospective. The basic script is:</p><ol id="5b62f7ad-0928-46fe-b5b2-a3d14c63353d" class="numbered-list" start="1"><li>Set the stage.</li></ol><ol id="d3cb097e-d2cd-4971-953f-78b8b120369d" class="numbered-list" start="2"><li>Gather data.</li></ol><ol id="d07b14d7-217b-417a-9ae3-e4411efe048b" class="numbered-list" start="3"><li>Generate insights.</li></ol><ol id="1d174690-cf71-4646-9419-05ebab37a081" class="numbered-list" start="4"><li>Decide what to do.</li></ol><ol id="4d215663-5609-413e-9ce4-e4e30fed1c4f" class="numbered-list" start="5"><li>Close the retrospective.</li></ol><p id="1e70e1d6-2d23-451d-af03-58c2ac17b10b" class="">Within that script, the facilitator can make choices with regard to which activities to use for each element.</p><h3 id="6f0cc8ed-e416-4735-9260-43fbde9d0319" class=""><strong>Project or Milestone Retrospective</strong></h3><p id="6b9c1d69-5345-4d9e-a42f-3e2da9519dbc" class="">These are the most intense retrospectives, in that they cover more project working time and should be the strictest with regard to following the ceremony described in the retrospective book. The goal of most project or milestone retrospectives is to identify proposed changes that the engineering crew or all of <a href="https://github.com/microsoft/code-with-engineering-playbook/blob/master/CSE.md">CSE</a> might try in the next project. Teams should cover the overall project or milestone, including the development phase, how the on-site hack went, how well the customer engineering team engaged, how well the wrap up activities went, how well the whole <a href="https://github.com/microsoft/code-with-engineering-playbook/blob/master/CSE.md">CSE</a> team worked together, etc.</p><p id="8a394eac-0129-4182-a893-217519b20f00" class="">A project or milestone retrospective will usually take <strong>3-4 hours</strong>, depending on how long or complex the milestone was and how many people are involved in the retrospective.</p><p id="3246c2e7-b76c-4df7-bc5f-56316d4e9790" class="">We recommend that project and milestone retrospectives bring in an experienced facilitator to work with the team. <a href="https://github.com/microsoft/code-with-engineering-playbook/blob/master/CSE.md">CSE</a> will maintain a list of experienced facilitators for teams to request.</p><ol id="a881834d-6c9a-49c7-bdbc-2f05af2d4bac" class="numbered-list" start="1"><li>Set the stage.<ol id="38bb2d10-bc41-46fa-b623-3870975ebc77" class="numbered-list" start="1"><li>Thank everyone for being here.</li></ol><ol id="968ee313-569c-46d9-8c83-c4907935a63a" class="numbered-list" start="2"><li>Walk through the standard <a href="https://github.com/microsoft/code-with-engineering-playbook/blob/master/CSE.md">CSE</a> retrospective introduction slide deck, reminding everyone of the purpose, script, and expected behaviors.</li></ol><ol id="2896d436-a013-41ce-9556-497657c4d1ce" class="numbered-list" start="3"><li>Each participant introduces themselves and their role on the project.</li></ol><ol id="49e78496-a505-475f-b2ba-a5340b8a3b50" class="numbered-list" start="4"><li>Do one Set the Stage activity: 4.1-4.3.</li></ol><ol id="70acdf77-402c-4b25-ae27-158de3435438" class="numbered-list" start="5"><li>Run a quick Working Agreement activity (4.4) to give participants a chance to add any items to the standard working agreement.</li></ol></li></ol><ol id="8dc0281c-8ad5-4d97-975e-40f8af08cf64" class="numbered-list" start="2"><li>Gather Data.<ol id="db729f4e-8ca3-4dd8-9613-cee2d4e7817c" class="numbered-list" start="1"><li>Run 2-3 Gather Data activities: 5.1-5.8.</li></ol><ol id="8a4de965-e25e-40f7-9303-d90d238583c5" class="numbered-list" start="2"><li>See the Recommended Activity Recipes section for ideas on selecting activities.</li></ol></li></ol><ol id="730d6c81-43e2-495c-82f6-8381bc99b0fd" class="numbered-list" start="3"><li>Generate Insights<ol id="6c3e70a5-9e3f-47ca-b2ef-f02c615bbe14" class="numbered-list" start="1"><li>Run 1 Generate Insights activity: 6.1-6.9.</li></ol><ol id="f05f906e-e619-43c2-8987-a992f926e361" class="numbered-list" start="2"><li>See the Recommended Activity Recipes section for ideas on selecting activities.</li></ol></li></ol><ol id="84d5dc9e-968b-41ea-b75d-4826351000d9" class="numbered-list" start="4"><li>Decide What to Do<ol id="df05c2c1-32be-4269-ad08-bf24ef488c2e" class="numbered-list" start="1"><li>Run 1 Decide What to Do activity: 7.1-7.4.</li></ol><ol id="ef6db211-e789-4d76-a75a-d71e633b8a4a" class="numbered-list" start="2"><li>See the Recommended Activity Recipes section for ideas on selecting activities.</li></ol></li></ol><ol id="fa1364f4-20f7-4cdf-b76e-734ad3d68e0c" class="numbered-list" start="5"><li>Close the Retrospective.<ol id="b43aeddc-65d6-4488-a8e1-f2cc8fa19b09" class="numbered-list" start="1"><li>Run 1 Close the Retrospective activity: 8.1-8.5.</li></ol><ol id="bad02ca2-3659-4a85-87f5-3de7dd442293" class="numbered-list" start="2"><li>See the Recommended Activity Recipes section for ideas on selecting activities.</li></ol><ol id="c53a3efb-1468-40d5-ae6f-ae410fbbff41" class="numbered-list" start="3"><li>Thank everyone for participating.</li></ol></li></ol><ol id="d687da3c-60f8-4709-894c-b965c9e1e3d3" class="numbered-list" start="6"><li>Follow up on proposed changes and experiments.</li></ol><h3 id="73beb930-6d63-43ce-836d-80fa38f72621" class=""><strong>Iteration Retrospective</strong></h3><p id="1e826745-43c7-414f-afe6-e288ac2c13a1" class="">Iteration reviews should follow the ceremony of the retrospective script, but using less time and fewer activities than the project or milestone retrospective. Iteration (sprint) retrospectives will focus more on execution and implementation details and how the team can improve execution for future iterations.</p><p id="2e9f1ac1-7180-4538-a8e5-8665d7b2f91b" class="">An iteration retrospective will usually take <strong>1-2 hours</strong>.</p><p id="f2b9b4f1-d8dd-4394-8b5a-9a0dec968628" class="">Usually, the scrum master or engineering manager will lead the first one or two iteration retrospectives. After that, it&#x27;s good for the team to take turns.</p><ol id="b7e3246b-8611-438d-9ae4-31d02d31a409" class="numbered-list" start="1"><li>Set the stage.<ol id="aa71cd97-be1d-4054-a896-407f7d5f469e" class="numbered-list" start="1"><li>Run a quick Working Agreement activity (4.4) to give participants a chance to add any items to the standard working agreement.</li></ol><ol id="f9767d80-e9db-49d9-a88b-48c35df7ed36" class="numbered-list" start="2"><li>Do one Set the Stage activity: 4.1-4.3.</li></ol></li></ol><ol id="6ee2e0f7-8289-42ea-bc23-11dcd8ddb2be" class="numbered-list" start="2"><li>Gather Data / Generate Insights<ol id="43b3276d-de76-4d04-88fc-caeb5d359b83" class="numbered-list" start="1"><li>Run 1 Gather Data or Generate Insights activity: 5.1-5.8 or 6.1-6.9. Alternate between them on alternating iterations or let the facilitator choose the activity that they believe will be the most helpful.</li></ol><ol id="1e361ddb-c90f-4d7f-9de1-d4635a9d2c5a" class="numbered-list" start="2"><li>See the recommended Activity Recipes section for ideas on selecting activities.</li></ol></li></ol><ol id="97b0abd7-1ed1-4bd1-89b6-68da2acfce20" class="numbered-list" start="3"><li>Decide What to Do<ol id="062f76a3-18fc-405f-9e0e-d59184cd2cea" class="numbered-list" start="1"><li>Run 1 Decide What to Do activity: 7.1-7.4.</li></ol><ol id="c4143777-5d36-407d-8d48-956419ba897a" class="numbered-list" start="2"><li>See the recommended Activity Recipes section for ideas on selecting activities.</li></ol></li></ol><ol id="7cf52b77-8d90-4ee4-9a46-f43b7f415f25" class="numbered-list" start="4"><li>Close the Retrospective<ol id="17877b04-cc36-422b-8560-95f332218b66" class="numbered-list" start="1"><li>Make sure someone is responsible for adding the proposed changes and/or experiments to work item tracking.</li></ol><ol id="f91af09a-126b-4170-9276-b01e7f2127c0" class="numbered-list" start="2"><li>Thank everyone for participating.</li></ol></li></ol><h3 id="a89bde65-422a-4144-a880-93197ba7b821" class=""><strong>Single-Day Iteration Retrospective</strong></h3><p id="057959c6-9267-4315-b345-f798de6796fa" class="">This variation assumes that the team is running an iteration per day, which is common in code-with engagements or hacks that have higher levels of uncertainty. In a single-day sprint, the team runs a 15-30 minute planning session for the day, conducts at least one standup (frequently immediately after lunch), and has a short demo, followed by a short retrospective at the end of the day.</p><p id="f580d23c-2cc2-468f-b865-33e743cd0c29" class="">A single-day iteration retrospective will usually take <strong>15-30 minutes</strong>.</p><p id="a92767eb-f684-4f1d-a4b9-6f9ae8cc0600" class="">The scrum master or engineering manager will lead these short retrospectives.</p><ol id="5d0d6330-2f7d-4c5d-8aee-08cb19e54f48" class="numbered-list" start="1"><li>Set the stage.<ol id="6dc04541-b314-4745-b0f0-41a4684ea462" class="numbered-list" start="1"><li>Remind everyone of the team&#x27;s working agreement for daily retrospectives.</li></ol><ol id="3ff41d24-adee-46af-b7d8-37160988e03c" class="numbered-list" start="2"><li>Give participants a chance to propose changes.</li></ol><ol id="3df0a0f3-71cb-4a27-8813-7f1f7fa0a8ad" class="numbered-list" start="3"><li>Do one Set the Stage activity: 4.1-4.3.</li></ol></li></ol><ol id="a5e3e977-9350-4091-8e1e-8b3868c9b548" class="numbered-list" start="2"><li>Activity<ol id="a631dec4-822f-4717-8f5b-5359fae9fcaf" class="numbered-list" start="1"><li>Run 1 activity from any section of the book.</li></ol><ol id="cd0bbcf3-9859-4e43-adc6-74f1dc809b9e" class="numbered-list" start="2"><li>The facilitator can choose based on they think the team could use.</li></ol></li></ol><ol id="78a2116a-f2a4-4211-983d-e9c240893efb" class="numbered-list" start="3"><li>Decide What to Do<ol id="6092b504-c698-4b11-88c4-d1eaf38dfdd1" class="numbered-list" start="1"><li>The team should decide if they want to make any change for the next day.</li></ol></li></ol><ol id="27c809b7-c66a-40b9-baf7-521b3b85c191" class="numbered-list" start="4"><li>Close the Retrospective<ol id="fd419e85-6bdc-4168-a529-1d0dd6ea585d" class="numbered-list" start="1"><li>Make sure someone is responsible for adding the proposed changes and/or experiments to work item tracking.</li></ol><ol id="e6bfb70e-8ec9-4499-956c-9e285e3c81a3" class="numbered-list" start="2"><li>Thank everyone for participating.</li></ol></li></ol><h3 id="bf4242fc-a2b6-45a1-ab6e-2a8ce2fcd586" class=""><strong>Recommended Activity Recipes</strong></h3><p id="884afb2d-c3f5-4cf6-b06b-69a06cef385b" class="">Below are recommended commendations of activities to use in the slots above.</p><h3 id="5275c5bb-29f2-45fc-a50b-710c532134d1" class=""><strong>Tough Project Milestone</strong></h3><p id="a7ab9d0c-b88c-417d-8768-aa2a1afd1e7c" class="">Give participants a chance to vent before getting into the more analytical parts of the retrospective.</p><ol id="17871009-c185-4a04-a28a-581faac67b12" class="numbered-list" start="1"><li>Set the Stage: Check-in (4.1), using a more emotion-oriented question</li></ol><ol id="de6b467d-9917-4755-aff2-386725181d09" class="numbered-list" start="2"><li>Gather Data: Mad Sad Glad (5.4) to bring out emotional responses</li></ol><ol id="e5232195-51e6-40d4-baa9-ea7f0eedd8e4" class="numbered-list" start="3"><li>Gather Data: Timeline (5.1) to move toward an analytical view</li></ol><ol id="81ba2b7f-a4af-45cd-8a1b-a8803bf93476" class="numbered-list" start="4"><li>Gather Data: Locate Strengths (5.5) to help people move toward positive</li></ol><ol id="9da41ffd-142b-4552-bf3a-dbdc6bcf9953" class="numbered-list" start="5"><li>Generate Insights: Five Whys (6.3) or Identify Themes (6.8) to dig into thorny issues or find the underlying connections in the data</li></ol><ol id="ebd9714a-5934-4590-8ddb-f6581aceaa89" class="numbered-list" start="6"><li>Decide What to Do: SMART Goals (7.2) to capture what the team wants to accomplish with proposed changes</li></ol><ol id="d20a6687-3d1f-40e6-abbc-9087026ff334" class="numbered-list" start="7"><li>Close the Retrospective: Appreciations (8.2) to give people the best chance of leaving with positive energy</li></ol></div></article></body></html>
